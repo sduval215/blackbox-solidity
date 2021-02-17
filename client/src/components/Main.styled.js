@@ -83,5 +83,6 @@ export const SubmitButton = styled.button`
   margin: 20px auto;
   &:disabled {
     opacity: 0.3;
+    cursor: not-allowed;
   }
 `

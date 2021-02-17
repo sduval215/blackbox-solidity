@@ -10,11 +10,28 @@ import {
   SubmitButton
 } from './Main.styled';
 
+const ipfsClient = require('ipfs-http-client');
+const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
+
 const Main = () => {
 
   const [buffer, setBuffer] = useState(null);
   const [fileName, setFileName] = useState(null);
+  const [uploading, setUploading] = useState(false);
 
+  /**
+   * Resets all file states
+   */
+  const resetFileStates = () => {
+    setUploading(false);
+    setFileName(false);
+    setBuffer(false);
+  }
+
+  /**
+   * Handles file buffer data capturing to state
+   * @param {HTMLFormEvent} e 
+   */
   const handleCapture = (e) => {
     e.preventDefault();
     // process file
@@ -27,9 +44,24 @@ const Main = () => {
     };
   }
 
-  const handleUpload = (e) => {
+  /**
+   * Handles file upload to IPFS
+   * hash example: QmcWmbPe7N54oVAAwguGVhmKXEgxDCBmKzDpBrXEfAPcDe
+   * IPFS url example: https://ipfs.infura.io/ipfs/QmcWmbPe7N54oVAAwguGVhmKXEgxDCBmKzDpBrXEfAPcDe
+   * @param {HTLMFormEvent} e 
+   */
+  const handleUpload = async (e) => {
+    setUploading(true);
     e.preventDefault();
-    console.log('submitting form with buffer: ', buffer);
+    try {
+      const result = await ipfs.add(buffer);
+      // TODO: handle solidity user/url data storage
+      console.log('ipfs result: ', result);
+      resetFileStates();
+    } catch(error) {
+      resetFileStates();
+      console.log(error);
+    }
   }
 
   return (
@@ -55,9 +87,9 @@ const Main = () => {
 
         <SubmitButton
           onClick={handleUpload}
-          disabled={!fileName}
+          disabled={!fileName || uploading}
         >
-          SUBMIT
+          {uploading ? 'UPLOADING..' : 'SUBMIT'}
         </SubmitButton>
         
       </Container>
