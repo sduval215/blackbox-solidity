@@ -36,4 +36,35 @@ contract('BlackBox', (accounts) => {
       assert.notEqual(owner, undefined);
     })
   })
+
+  describe('functionality', async () => {
+
+    it('can publish files and fetch past submissions', async () => {
+
+      // test hashes
+      const firstHashPath = "QmcWmbPe7N54oVAAwguGVhmKXEgxDCBmKzDpBrXEfAPcDe";
+      const secondHashPath = "XmcWmbPe7N54oVA3wDuGVhmKXEgxDCBmKz4pBrXEfAZcDe";
+
+      let submissions;
+
+      // publish first file path
+      await contract.publishFile(firstHashPath, { from: accounts[0] });
+      
+      // check user submissions after publishing first file path
+      submissions = await contract.getUserSubmissions({ from: accounts[0] });
+
+      assert.equal(submissions[0].pathHash, firstHashPath);
+      assert.equal(submissions.length, 1);
+
+      // publish second file path
+      await contract.publishFile(secondHashPath, { from: accounts[0] });
+
+      // check user submissions after publishing second file path
+      submissions = await contract.getUserSubmissions({ from: accounts[0] });
+
+      assert.equal(submissions[0].pathHash, firstHashPath);
+      assert.equal(submissions[1].pathHash, secondHashPath);
+      assert.equal(submissions.length, 2);
+    })
+  })
 });
