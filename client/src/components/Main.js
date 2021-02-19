@@ -63,9 +63,12 @@ const Main = () => {
       const result = await ipfs.add(buffer);
       const hashPath = result.path;
 
-      // Qmaf6F2RRDXwgSkhXsi7efZxQkyQ4bYyr7jDAPgSeVHJfk 
+      // test hash: Qmaf6F2RRDXwgSkhXsi7efZxQkyQ4bYyr7jDAPgSeVHJfk
 
-      resetFileStates();
+      // upload to ETH smart contract
+      await blackboxContract.methods.publishFile(hashPath).send({ from: account }).on('transactionHash', () => {
+        resetFileStates();
+      }) 
     } catch(error) {
       resetFileStates();
       console.log(error);
@@ -101,6 +104,7 @@ const Main = () => {
       const address = blackboxData.address;
       const blackboxContract = new web3.eth.Contract(abi, address);
       setBlackboxContract(blackboxContract);
+
       setWeb3Loaded(true);
     } else {
       window.alert('Smart contract not found on this network. Please try again..');
@@ -116,7 +120,7 @@ const Main = () => {
     if(!web3Loaded) {
       loadBlockchain();
     }
-  }, [])
+  }, [web3Loaded])
 
   return (
     <Wrapper>
