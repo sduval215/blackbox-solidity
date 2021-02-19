@@ -12,6 +12,8 @@ contract BlackBox {
   address public owner;
   string public name = "BlackBox DApp Smart Contract";
 
+  event Publish(string hashPath, address user);
+
   struct Submission {
     string pathHash;
     uint256 published;
@@ -46,6 +48,8 @@ contract BlackBox {
         published: now
       })
     );
+
+    emit Publish(hashPath, msg.sender);
 
     return true;
   }
