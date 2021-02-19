@@ -12,7 +12,7 @@ const BaseButton = css`
 `
 
 export const Wrapper = styled.div`
-  height: 100%;
+  height: 94vh;
   width: 100%;
   display: flex;
   justify-content: center;
