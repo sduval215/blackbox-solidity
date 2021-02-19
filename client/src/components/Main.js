@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import BlackBox from '../contracts/BlackBox.json';
+import { loadWeb3 } from '../helpers/web3';
 
 import {
   Wrapper,
@@ -18,6 +20,10 @@ const Main = () => {
   const [buffer, setBuffer] = useState(null);
   const [fileName, setFileName] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [web3Loaded, setWeb3Loaded] = useState(false);
+
+  const [account, setAccount] = useState('0x0');
+  const [blackboxContract, setBlackboxContract] = useState(null);
 
   /**
    * Resets all file states
@@ -55,14 +61,53 @@ const Main = () => {
     e.preventDefault();
     try {
       const result = await ipfs.add(buffer);
-      // TODO: handle solidity user/url data storage
-      console.log('ipfs result: ', result);
-      resetFileStates();
+      const hashPath = result.path;
+
+      // test hash: Qmaf6F2RRDXwgSkhXsi7efZxQkyQ4bYyr7jDAPgSeVHJfk
+
+      // upload to ETH smart contract
+      await blackboxContract.methods.publishFile(hashPath).send({ from: account }).on('transactionHash', () => {
+        resetFileStates();
+      }) 
     } catch(error) {
       resetFileStates();
       console.log(error);
     }
   }
+
+  const getBlockchainData = async () => {
+    const web3 = window.web3;
+
+    // get account information
+    const accounts = await web3.eth.getAccounts();
+
+    setAccount(accounts[0]);
+
+    // get blackbox contract data
+    const networkId = await web3.eth.net.getId();
+    const blackboxData = BlackBox.networks[networkId];
+    if(blackboxData) {
+      const abi = BlackBox.abi;
+      const address = blackboxData.address;
+      const blackboxContract = new web3.eth.Contract(abi, address);
+      setBlackboxContract(blackboxContract);
+
+      setWeb3Loaded(true);
+    } else {
+      window.alert('Smart contract not found on this network. Please try again..');
+    }
+  }
+
+  useEffect(() => {
+    async function loadBlockchain() {
+      await loadWeb3();
+      await getBlockchainData();
+    }
+
+    if(!web3Loaded) {
+      loadBlockchain();
+    }
+  }, [web3Loaded])
 
   return (
     <Wrapper>
