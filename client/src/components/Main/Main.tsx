@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import BlackBox from '../contracts/BlackBox.json';
-import { loadWeb3 } from '../helpers/web3';
+import BlackBox from '../../contracts/BlackBox.json';
+import { loadWeb3 } from '../../helpers/web3';
 
 import {
   Wrapper,
@@ -18,27 +18,27 @@ const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' 
 const Main = () => {
 
   const [buffer, setBuffer] = useState(null);
-  const [fileName, setFileName] = useState(null);
-  const [uploading, setUploading] = useState(false);
-  const [web3Loaded, setWeb3Loaded] = useState(false);
+  const [fileName, setFileName] = useState<string | null>(null);
+  const [uploading, setUploading] = useState<boolean>(false);
+  const [web3Loaded, setWeb3Loaded] = useState<boolean>(false);
 
-  const [account, setAccount] = useState('0x0');
-  const [blackboxContract, setBlackboxContract] = useState(null);
+  const [account, setAccount] = useState<string>('0x0');
+  const [blackboxContract, setBlackboxContract] = useState<any>(null);
 
   /**
    * Resets all file states
    */
   const resetFileStates = () => {
     setUploading(false);
-    setFileName(false);
-    setBuffer(false);
+    setFileName(null);
+    setBuffer(null);
   }
 
   /**
    * Handles file buffer data capturing to state
    * @param {HTMLFormEvent} e 
    */
-  const handleCapture = (e) => {
+  const handleCapture = (e:any) => {
     e.preventDefault();
     // process file
     const file = e.target.files[0];
@@ -46,6 +46,7 @@ const Main = () => {
     const reader = new window.FileReader();
     reader.readAsArrayBuffer(file);
     reader.onloadend = () => {
+      // @ts-ignore
       setBuffer(Buffer(reader.result));
     };
   }
@@ -56,7 +57,7 @@ const Main = () => {
    * IPFS url example: https://ipfs.infura.io/ipfs/QmcWmbPe7N54oVAAwguGVhmKXEgxDCBmKzDpBrXEfAPcDe
    * @param {HTLMFormEvent} e 
    */
-  const handleUpload = async (e) => {
+  const handleUpload = async (e:any) => {
     setUploading(true);
     e.preventDefault();
     try {
@@ -76,6 +77,7 @@ const Main = () => {
   }
 
   const getBlockchainData = async () => {
+    // @ts-ignore
     const web3 = window.web3;
 
     // get account information
@@ -85,6 +87,7 @@ const Main = () => {
 
     // get blackbox contract data
     const networkId = await web3.eth.net.getId();
+    // @ts-ignore
     const blackboxData = BlackBox.networks[networkId];
     if(blackboxData) {
       const abi = BlackBox.abi;
@@ -112,7 +115,7 @@ const Main = () => {
   return (
     <Wrapper>
       <Container>
-        <Logo alt="blackox-logo" />
+        <Logo />
         <Title>
           BLACKBOX
         </Title>

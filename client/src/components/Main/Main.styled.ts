@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { ReactComponent as LogoIcon } from '../assets/icon.svg';
+import { ReactComponent as LogoIcon } from '../../assets/icon.svg';
 
 const BaseButton = css`
   cursor: pointer;
