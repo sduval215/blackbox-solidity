@@ -33,8 +33,8 @@ contract BlackBox {
     @dev handles submission array data returns based
     on msg.sender value
   */
-  function getUserSubmissions () public view returns (Submission[] memory submissions) {
-    return(users[msg.sender].submissions);
+  function getUserSubmissions (address user) public view returns (Submission[] memory submissions) {
+    return(users[user].submissions);
   }
 
   /**

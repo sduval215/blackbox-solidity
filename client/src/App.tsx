@@ -22,6 +22,7 @@ const App = () => {
   const [account, setAccount] = useState<string>('0x0');
   const [blackboxContract, setBlackboxContract] = useState<any>(null);
   const [web3Loaded, setWeb3Loaded] = useState<boolean>(false);
+  const [showAccounts, setShowAccounts] = useState<boolean>(false);
  
   useEffect(() => {
     async function loadBlockchain() {
@@ -60,11 +61,15 @@ const App = () => {
     }
   }
 
+  if(!blackboxContract || !account) {
+    return <p>Loading...</p>
+  }
+
   return (
     <Router>
-      <Header address={account}/>
+      <Header setShowAccounts={setShowAccounts} address={account}/>
       <Switch>
-        <Route exact path="/" component={() => <Main address={account} contract={blackboxContract} />}/>
+        <Route exact path="/" component={() => <Main setShowAccounts={setShowAccounts} showAccounts={showAccounts} address={account} contract={blackboxContract} />}/>
         <Redirect to="/"/>
       </Switch>
     </Router>
