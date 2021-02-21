@@ -19,12 +19,15 @@ export const Wrapper = styled.div`
 export const Container = styled.div`
   background-color: #FFF;
   max-width: 500px;
-  max-height: 600px;
-  overflow: scroll;
   width: 100%;
   border-radius: 4px;
   padding: 20px;
   position: relative;
+`
+
+export const SubmissionsContainer = styled.div`
+  max-height: 600px;
+  overflow: scroll;
 `
 
 export const Header = styled.h3`

@@ -7,7 +7,8 @@ import {
   Paragraph,
   Title,
   FileInputContainer,
-  SubmitButton
+  SubmitButton,
+  Status as StatusContainer
 } from './Main.styled';
 
 import Submissions from '../Submissions';
@@ -27,6 +28,16 @@ const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
   const [buffer, setBuffer] = useState(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
+  const [status, setStatus] = useState<string | null>(null);
+
+  /**
+   * Handles status updating and subsequent resetting 
+   * @param status {boolean}
+   */
+  const handleStatusUpdate = (status:string) => {
+    setStatus(status);
+    setTimeout(() => setStatus(null), 3000);
+  }
 
   /**
    * Resets all file states
@@ -71,6 +82,7 @@ const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
 
       // upload to ETH smart contract
       await contract.methods.publishFile(hashPath).send({ from: address }).on('transactionHash', () => {
+        handleStatusUpdate('Successfully published.');
         resetFileStates();
       }) 
     } catch(error) {
@@ -82,6 +94,11 @@ const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
   return (
     <Wrapper>
       {showAccounts && <Submissions setShowAccounts={setShowAccounts} contract={contract} address={address} />}
+      { status && (
+        <StatusContainer>
+          <p>{status}</p>
+        </StatusContainer>
+      )}
       <Container>
         <Logo />
         <Title>
