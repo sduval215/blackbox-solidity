@@ -11,6 +11,18 @@ const BaseButton = css`
   border: none;
 `
 
+export const Status = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: linear-gradient(265.74deg, #BD00FF 5.03%, rgba(255, 31, 138, 0.95) 129.13%);
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #FFF;
+  font-family: sans-serif;
+`
+
 export const Wrapper = styled.div`
   height: 94vh;
   width: 100%;
