@@ -28,6 +28,7 @@ export const Header = styled.h3`
   font-family: sans-serif;
   font-size: 18px;
   font-weight: 600;
+  margin-bottom: 20px;
 `
 
 export const Exit = styled(ExitIcon)`
