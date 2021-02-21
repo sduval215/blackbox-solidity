@@ -10,15 +10,19 @@ import {
   SubmitButton
 } from './Main.styled';
 
+import Submissions from '../Submissions';
+
 const ipfsClient = require('ipfs-http-client');
 const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
 interface Props {
   contract: any;
   address: string;
+  showAccounts: boolean;
+  setShowAccounts: any;
 }
 
-const Main = ({ contract, address }:Props) => {
+const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
 
   const [buffer, setBuffer] = useState(null);
   const [fileName, setFileName] = useState<string | null>(null);
@@ -77,6 +81,7 @@ const Main = ({ contract, address }:Props) => {
 
   return (
     <Wrapper>
+      {showAccounts && <Submissions setShowAccounts={setShowAccounts} contract={contract} address={address} />}
       <Container>
         <Logo />
         <Title>

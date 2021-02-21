@@ -1,13 +1,14 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { Wrapper, Logo, RightHandContainer, Address } from './Header.styled';
+import { Wrapper, Logo, RightHandContainer, Address, Submissions } from './Header.styled';
 
 interface Props {
   address: string;
+  setShowAccounts: any;
 }
 
-const Header = ({ address }:Props) => {
+const Header = ({ address, setShowAccounts }:Props) => {
   return (
     <Wrapper>
       <Link to="/">
@@ -15,6 +16,9 @@ const Header = ({ address }:Props) => {
       </Link>
 
       <RightHandContainer>
+        <Submissions onClick={setShowAccounts}>
+          Submissions
+        </Submissions>
         <Address>
           {address}
         </Address>

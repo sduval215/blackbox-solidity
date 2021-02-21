@@ -20,6 +20,19 @@ export const RightHandContainer = styled.div`
   display: flex;
 `
 
+export const Submissions = styled.button`
+  cursor: pointer;
+  border: none;
+  padding: 13px 15px;
+  background: linear-gradient(265.74deg,#BD00FF 5.03%,rgba(255,31,138,0.75) 129.13%);
+  margin-right: 10px;
+  border-radius: 4px;
+  color: #FFF;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+`
+
 export const Address = styled.div`
   background-color: rgb(241, 242, 246);
   border-radius: 4px;
