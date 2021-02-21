@@ -22,7 +22,7 @@ const App = () => {
   const [account, setAccount] = useState<string>('0x0');
   const [blackboxContract, setBlackboxContract] = useState<any>(null);
   const [web3Loaded, setWeb3Loaded] = useState<boolean>(false);
-  const [showAccounts, setShowAccounts] = useState<boolean>(true);
+  const [showAccounts, setShowAccounts] = useState<boolean>(false);
  
   useEffect(() => {
     async function loadBlockchain() {

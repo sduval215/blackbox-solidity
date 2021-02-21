@@ -13,11 +13,14 @@ export const Wrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 15px;
 `
 
 export const Container = styled.div`
   background-color: #FFF;
   max-width: 500px;
+  max-height: 600px;
+  overflow: scroll;
   width: 100%;
   border-radius: 4px;
   padding: 20px;
