@@ -13,6 +13,8 @@ import {
 
 import Submissions from '../Submissions';
 
+import { Status } from '../../types'; 
+
 const ipfsClient = require('ipfs-http-client');
 const ipfs = ipfsClient({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' });
 
@@ -28,15 +30,17 @@ const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
   const [buffer, setBuffer] = useState(null);
   const [fileName, setFileName] = useState<string | null>(null);
   const [uploading, setUploading] = useState<boolean>(false);
-  const [status, setStatus] = useState<string | null>(null);
+  const [status, setStatus] = useState<Status | null>(null);
 
   /**
    * Handles status updating and subsequent resetting 
    * @param status {boolean}
    */
   const handleStatusUpdate = (status:string) => {
-    setStatus(status);
-    setTimeout(() => setStatus(null), 3000);
+    setStatus({ message: status, show: true });
+    // hide status first, then reset message shortly after (for animation purposes);
+    setTimeout(() => setStatus({ show: false, message: status }), 2000);
+    setTimeout(() => setStatus({ message: ''}), 3000);
   }
 
   /**
@@ -94,11 +98,9 @@ const Main = ({ contract, address, showAccounts, setShowAccounts }:Props) => {
   return (
     <Wrapper>
       {showAccounts && <Submissions setShowAccounts={setShowAccounts} contract={contract} address={address} />}
-      { status && (
-        <StatusContainer>
-          <p>{status}</p>
-        </StatusContainer>
-      )}
+      <StatusContainer className={status?.show ? 'showStatus' : ''}>
+        <p>{status?.message}</p>
+      </StatusContainer>
       <Container>
         <Logo />
         <Title>
