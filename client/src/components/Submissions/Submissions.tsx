@@ -23,8 +23,12 @@ const Submissions = ({ contract, address, setShowAccounts }:Props) => {
 
   useEffect(() => {
     async function fetchSubmissions()  {
-      const submissions = await contract.methods.getUserSubmissions(address).call();
-      setSubmissions(submissions);
+      try {
+        const submissions = await contract.methods.getUserSubmissions().call({ from: address });
+        setSubmissions(submissions);
+      } catch(error) {
+        console.log(error);
+      }
     }
 
     if(address && contract) {
@@ -39,8 +43,8 @@ const Submissions = ({ contract, address, setShowAccounts }:Props) => {
         <Exit onClick={() => setShowAccounts(false) } />
         <SubmissionsContainer>
           {submissions && submissions.length > 0 ? submissions.reverse().map(({ pathHash, published, title }:Sub) => (
-            <Submission pathHash={pathHash} published={published} title={title} />
-          )) : <p>Loading..</p>}
+            <Submission key={published} pathHash={pathHash} published={published} title={title} />
+          )) : <p>No submissions</p>}
         </SubmissionsContainer>
       </Container>
     </Wrapper>
