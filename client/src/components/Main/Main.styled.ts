@@ -11,24 +11,32 @@ const BaseButton = css`
   border: none;
 `
 
-export const Status = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: linear-gradient(265.74deg, #BD00FF 5.03%, rgba(255, 31, 138, 0.95) 129.13%);
-  font-weight: 600;
-  padding: 15px 20px;
-  border-radius: 8px;
-  color: #FFF;
-  font-family: sans-serif;
-`
-
 export const Wrapper = styled.div`
   height: 94vh;
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+
+  .showStatus {
+    opacity: 1;
+    transition: 0.2s ease-in;
+    left: 20px;
+  }
+`
+
+export const Status = styled.div`
+  opacity: 0;
+  position: absolute;
+  transition: 0.2s ease-in;
+  top: 20px;
+  left: -50px;
+  background: linear-gradient(265.74deg, #BD00FF 5.03%, rgba(255, 31, 138, 0.95) 129.13%);
+  font-weight: 600;
+  padding: 15px 20px;
+  border-radius: 8px;
+  color: #FFF;
+  font-family: sans-serif;
 `
 
 export const Container = styled.div`
